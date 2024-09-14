@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WebSocket Client</title>
+</head>
+<body>
+<h1>WebSocket Client</h1>
+<input id="messageInput" type="text" placeholder="Enter a message" />
+<button onclick="sendMessage()">Send</button>
+
+<script>
+    const ws = new WebSocket("ws://localhost:8000/ws");
+
+    ws.onopen = function () {
+        console.log("Connected to server");
+    };
+
+    ws.onmessage = function (event) {
+        console.log("Message from server:", event.data);
+    };
+
+    function sendMessage() {
+        let input = document.getElementById("messageInput").value;
+        // form json object with random number as id and Content as input
+        input = JSON.stringify({
+            id: Math.floor(Math.random() * 100).toString(),
+            content: input,
+        });
+
+        console.log("Sending message to server:", input);
+        ws.send(input);
+    }
+</script>
+</body>
+</html>
